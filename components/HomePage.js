@@ -29,14 +29,6 @@ export function HomePage(props){
       })
     
     
-      const Greeting = () => {
-        if(!user) {
-          return null
-        }
-        else{
-          return <Text>{user.email}</Text>
-        }
-      }
     const signOut=() =>{
         props.signout().then((result)=>{
             if(result === true ){
@@ -49,7 +41,7 @@ export function HomePage(props){
     return(
         <View style={HomeStyles.page}> 
             <Logo/>
-            <Greeting />
+  
             <TouchableOpacity onPress={ signOut} >
             </TouchableOpacity>
             <Text style={HomeStyles.title}>Select the option you are looking for!</Text>

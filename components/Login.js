@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { Signin } from './Signin';
 import { Logo } from './Logo';
@@ -11,6 +11,7 @@ const [password, setPassword] =useState()
 
 const[validEmail, setValidEmail]= useState(false)
 const [validPassword, setValidPassword]= useState(false)
+const [showmodal, setShowModal]=useState(false)
 
 const navigation =useNavigation()
 
@@ -55,9 +56,25 @@ const HandleSubmit =() =>{
         <TextInput secureTextEntry={true} 
         style={LoginStyles.input}
         onChangeText ={(val) => HandlePassword(val)}/>
+         <Modal animationType = "slide"
+                transparent ={true}
+                visible ={showmodal}
+                onRequestClose={() => {
+                    Alert.alert("Closed");
+                    setShowModal(!showmodal);
+                    }}>
+                        <View style={LoginStyles.modalStyle}>
+                            <Text style={LoginStyles.textModal}>User created successfully</Text>
+                            <TouchableOpacity style={LoginStyles.buttonClose} onPress={() => setShowModal(!showmodal)}>
+                                <Text> Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+           
         <TouchableOpacity style={(!validEmail || !validPassword) ? LoginStyles.buttonDisabled : LoginStyles.loginButton}
         onPress= {HandleSubmit} 
         disabled={(!validEmail && !validPassword) ? true:false}
+        onPress = {() => setShowModal(true)}
         >
             <Text style={LoginStyles.textButton}> Submit</Text>
         </TouchableOpacity>
@@ -126,5 +143,23 @@ const LoginStyles= StyleSheet.create({
         textAlign:'center',
         fontSize:20,
         margin:10
-    }
+    },
+    modalStyle:{
+        margin:20,
+        borderRadius:10,
+        backgroundColor:"#ed344c",
+        padding: 30,
+        alignItems:'center',
+        marginTop:500
+        
+    },
+   textModal:{
+        fontSize:20,
+        color:'#f9e693',
+        padding:10
+   },
+   buttonClose:{
+        color:'#263e47',
+        fontSize:15
+   }
 })

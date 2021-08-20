@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { Logout } from './Logout';
 import { Logo } from './Logo';
@@ -12,6 +12,7 @@ export function AddMovies(props){
     const [duration, setDuration] = useState()
     const [sinopse, setSinopse] = useState()
     const navigation = useNavigation()
+    const [showmodal, setShowModal]=useState(false)
 
     navigation.setOptions({
         headerRight:()=>(
@@ -32,14 +33,6 @@ export function AddMovies(props){
       })
     
     
-      const Greeting = () => {
-        if(!user) {
-          return null
-        }
-        else{
-          return <Text>{user.email}</Text>
-        }
-      }
     const signOut=() =>{
         props.signout().then((result)=>{
             if(result === true ){
@@ -66,7 +59,7 @@ export function AddMovies(props){
    
     return(
         <View style={AddStyles.page} > 
-            <Greeting />
+
             <TouchableOpacity onPress={ signOut}>
             </TouchableOpacity>
             <Text style={AddStyles.headTitle}> Add Movie</Text>
@@ -80,7 +73,21 @@ export function AddMovies(props){
             <TextInput onChangeText={(val) => setDuration(val)} style={AddStyles.input}/>
             <Text style={AddStyles.text}> Insert the sinopse</Text>
             <TextInput onChangeText={(val) => setSinopse(val)} style={AddStyles.input}/>
-            <TouchableOpacity onPress={handleSubmit} style={AddStyles.addButton}>
+            <Modal animationType = "slide"
+                transparent ={true}
+                visible ={showmodal}
+                onRequestClose={() => {
+                    Alert.alert("Closed");
+                    setShowModal(!showmodal);
+                    }}>
+                        <View style={AddStyles.modalStyle}>
+                            <Text style={AddStyles.textModal}>Your movie was added</Text>
+                            <TouchableOpacity style={AddStyles.buttonClose} onPress={() => setShowModal(!showmodal)}>
+                                <Text> Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+            <TouchableOpacity onPress={handleSubmit} style={AddStyles.addButton} onPress = {() => setShowModal(true)}>
               <Text  style={AddStyles.textButton}>Add</Text>
             </TouchableOpacity>
             <Footer />
@@ -139,6 +146,22 @@ const AddStyles= StyleSheet.create({
         fontSize:20
         
     },
-
-   
+    modalStyle:{
+        margin:20,
+        borderRadius:10,
+        backgroundColor:"#ed344c",
+        padding: 30,
+        alignItems:'center',
+        marginTop:500
+        
+    },
+   textModal:{
+        fontSize:20,
+        color:'#f9e693',
+        padding:10
+   },
+   buttonClose:{
+        color:'#263e47',
+        fontSize:15
+   }
 })

@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { firebaseConfig } from './config';
 import * as firebase from 'firebase'
-import { NavigationContainer, useNavigation } from '@react-navigation/native'; 
+import {firebaseConfig} from './config'
+import { NavigationContainer } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { Login } from './components/Login';
@@ -40,15 +40,12 @@ useEffect(() => {
 
 const addData =(data) =>{
   return new Promise((resolve, reject)=>{
-    if(!auth){
-      reject("User not found")
-    }
-    else{
+ 
       const ref= db.collection('users').doc(auth.uid).collection('movies')
       ref.add(data)
       .then(() => {resolve (true)})
       .catch((error)=> {reject(error)})
-    }
+  
     
   } )
 }
@@ -86,7 +83,7 @@ const HandleSignout=()=>{
   })
  
 }
-const readData = () => {
+const readData = (data) => {
   const ref = db.collection('users').doc(auth.uid)
     ref.collection('movies')
       .onSnapshot( (snapshot) => {
@@ -123,7 +120,7 @@ return(
       <Stack.Screen name="MoviesList" 
       options={{title:"Movies List"}}>
         { (props) => <MoviesList {...props} signout={HandleSignout}
-        listdata={setData}
+        listdata={data}
         read={readData}
          auth={auth} />}
       </Stack.Screen>

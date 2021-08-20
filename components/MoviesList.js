@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/core';
 import { Logout } from './Logout';
 import { Logo } from './Logo';
 import { Footer } from './Footer';
+import { AddMovies } from './AddMovies';
 
 export function MoviesList(props){
     const [user, setUser]=useState()
@@ -48,18 +49,9 @@ export function MoviesList(props){
     const Renderer = ({list}) => (
 
       
-        <View style={ (list.status === true) ? ListStyle.listItemDone : ListStyle.listItem}>
-            
-          <View style={ListStyle.buttons}>   
-            <TouchableOpacity onPress={ () => props.doneHandler(list.id) }>
-            <Text style={ListStyle.buttonText}>Done</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={ () => props.deleteHandler(list.id) }>
-            <Text style={ListStyle.buttonText1}>Delete</Text>
-            </TouchableOpacity>
-            <Text style={ListStyle.listText}>{list.name}</Text>
-          </View>
-        </View>
+          <View>
+            <Text style={ListStyle.listText}>{list.id}</Text>
+            </View>
     )
    
     return(
