@@ -49,27 +49,33 @@ export default function App() {
 
 
   const HandleLogin = (email, password) => {
-    return new Promise( (resolve,reject) => {
+    return new Promise((resolve, reject) => {
       firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-        // console.log(response)
-        setAuth(true)
-        resolve( true )
-      })
-      .catch((error) => {
-        console.log(error)
-        reject( error )
-      })
+        .then((response) => {
+          // console.log(response)
+          setAuth(true)
+          resolve(true)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
     })
   }
 
   const HandleSignin = (email, password) => {
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        console.log(response)
-        setAuth(true)
-      })
-      .catch((error) => console.log(error))
+    return new Promise((resolve, reject) => {
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((response) => {
+          // console.log(response)
+          setAuth(true)
+          resolve( true )
+        })
+        .catch((error) => {
+          // console.log(error)
+          reject( error )
+        })
+    })
   }
 
   const HandleSignout = () => {
