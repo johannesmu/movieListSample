@@ -29,15 +29,6 @@ export function MoviesList(props){
         })
       })
     
-    
-      const Greeting = () => {
-        if(!user) {
-          return null
-        }
-        else{
-          return <Text>{user.email}</Text>
-        }
-      }
     const signOut=() =>{
         props.signout().then((result)=>{
             if(result === true ){
@@ -46,24 +37,25 @@ export function MoviesList(props){
         })
        .catch((error)=> console.log(error))
     }
-    const Renderer = ({list}) => (
+    const Renderer = ({data}) => (
 
       
           <View>
-            <Text style={ListStyle.listText}>{list.id}</Text>
+            <Text style={ListStyle.listText}>{data.title}</Text>
             </View>
     )
    
     return(
         <View style={ListStyles.page}> 
-            <Greeting />
             <TouchableOpacity onPress={ signOut}>
             </TouchableOpacity>
             <Text style={ListStyles.headTitle}>Movies List</Text>
             <Logo/>
-            <FlatList     data={ props.read } 
+            <FlatList             
+            listdata={data}
+            read={readData}
             renderList={ Renderer} 
-            keyExtractor={ list => list.id.toString()}/>
+            keyExtractor={ data => data.id.toString()}/>
             <Footer/>
         </View>
     )
