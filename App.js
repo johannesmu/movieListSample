@@ -100,6 +100,7 @@ export default function App() {
         let dataArray = []
         snapshot.forEach((doc) => {
           let movie = doc.data()
+          movie.id = doc.id
           dataArray.push(movie)
         })
         console.log( dataArray)

@@ -17,7 +17,8 @@ export function Login(props) {
 
     useEffect(() => {
         if (props.auth) {
-            navigation.navigate("Signin")
+            // navigation.navigate("Signin")
+            navigation.reset({ index: 0, routes: [{ name: "Home" }] })
         }
     }, [props.auth])
 
@@ -43,6 +44,16 @@ export function Login(props) {
 
     const HandleSubmit = () => {
         props.handler(email, password)
+        .then((response) => {
+            if( response ) {
+                console.log(response)
+                setShowModal( true )
+                // navigation.reset({ index: 0, routes: [{ name: "Home" }] })
+            }
+        })
+        .catch( (error) => {
+            console.log(error)
+        })
     }
     return (
         <View style={LoginStyles.page}>
@@ -73,7 +84,7 @@ export function Login(props) {
             <TouchableOpacity style={(!validEmail || !validPassword) ? LoginStyles.buttonDisabled : LoginStyles.loginButton}
                 onPress={HandleSubmit}
                 disabled={(!validEmail && !validPassword) ? true : false}
-                onPress={() => setShowModal(true)}
+                // onPress={() => setShowModal(true)}
             >
                 <Text style={LoginStyles.textButton}> Submit</Text>
             </TouchableOpacity>
