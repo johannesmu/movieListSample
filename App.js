@@ -25,7 +25,7 @@ export default function App() {
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      setAuth(true)
+      setAuth(user)
     }
     else {
       setAuth(false)
@@ -33,13 +33,14 @@ export default function App() {
   })
 
   useEffect(() => {
-    if (!data) {
+    if (!data && auth) {
       readData()
     }
-  }, [data])
+  }, [data, auth])
 
   const addData = (data) => {
     return new Promise((resolve, reject) => {
+      console.log(auth.uid)
       const ref = db.collection('users').doc(auth.uid).collection('movies')
       ref.add(data)
         .then(() => { resolve(true) })
@@ -67,12 +68,12 @@ export default function App() {
     return new Promise((resolve, reject) => {
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((response) => {
-          // console.log(response)
+          console.log(response)
           setAuth(true)
           resolve( true )
         })
         .catch((error) => {
-          // console.log(error)
+          console.log(error)
           reject( error )
         })
     })
@@ -98,9 +99,10 @@ export default function App() {
       .onSnapshot((snapshot) => {
         let dataArray = []
         snapshot.forEach((doc) => {
-          let data = doc.data()
-          dataArray.push(data)
+          let movie = doc.data()
+          dataArray.push(movie)
         })
+        console.log( dataArray)
         setData(dataArray)
       })
   }
